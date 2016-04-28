@@ -24,10 +24,10 @@ import javax.swing.JOptionPane;
  */
 public class CrearExcel {
     private File file;
-    private String nombre;
     private Object[][] data;
     
-    public CrearExcel(String nombre, Object[][] data) {
+    public CrearExcel(Object[][] data) {
+        this.data = data;
         showSaveDialog();
     }
     
@@ -35,7 +35,7 @@ public class CrearExcel {
     private void showSaveDialog(){
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        fileChooser.setSelectedFile(new File("/" + nombre + new SimpleDateFormat("ddMMyyyy").format(new Date()) +".csv"));
+        fileChooser.setSelectedFile(new File("/CONSULTA" + new SimpleDateFormat("ddMMyyyy_hhmmss").format(new Date()) +".csv"));
         
         if(fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
             file = fileChooser.getSelectedFile();

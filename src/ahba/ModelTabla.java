@@ -25,7 +25,7 @@ public class ModelTabla extends DefaultTableModel implements Serializable{
     private String[] nombreColumnas;
     private JTable tabla;
     private TableRowSorter sorter;
-    private Class[] tipoColumnas;
+    private Class[] tipoColumnas = {String.class, String.class, String.class};
     private boolean[] editables;
 
     public ModelTabla() {
@@ -36,13 +36,15 @@ public class ModelTabla extends DefaultTableModel implements Serializable{
         tabla.setAutoCreateRowSorter(true);
     }
     
-    public ModelTabla(String[] columnas) {
+    public ModelTabla(String[] columnas, boolean[] editables) {
         super(null, columnas);
         this.nombreColumnas = columnas;
+        this.editables = editables;
         tabla = new JTable();
         tabla.setDragEnabled(false);
         tabla.setAutoscrolls(true);
         tabla.setAutoCreateRowSorter(true);
+        createTable();
     }
     
     public void createTable() {
@@ -74,7 +76,6 @@ public class ModelTabla extends DefaultTableModel implements Serializable{
     }
 
     public void agregarTabla(JScrollPane scrollPane) {
-        scrollPane.removeAll();
         scrollPane.setViewportView(tabla);
     }
     

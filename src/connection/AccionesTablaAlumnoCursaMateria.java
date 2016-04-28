@@ -258,6 +258,27 @@ public class AccionesTablaAlumnoCursaMateria {
 
         return lista.toArray(new String[0]);
     }
+    
+    public static String[] getListaMaterias(String carrera) {
+        List<String> lista = new ArrayList<>();
+        DatabaseConnection db = new DatabaseConnection();
+
+        try {
+            Connection con = db.getConnection();
+            PreparedStatement pst = con.prepareStatement("SELECT idUnidad_Aprendizaje FROM programa_academico_unidad_aprendizaje where idPrograma_Academico like ?");
+            pst.setString(1, carrera);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                lista.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        db.closeConnection();
+
+        return lista.toArray(new String[0]);
+    }
 
     public static boolean insertaNuevaUnidadDeAprendizaje(String materia, String carrera, String academia) {
         boolean inserted = false;
@@ -333,8 +354,8 @@ public class AccionesTablaAlumnoCursaMateria {
         return quantity;
     }
 
-    public static ModelTabla getConsultaGeneral() {
-        ModelTabla model = new ModelTabla();
+    public static Object[][] getConsultaPorCarrera(String carrera, JScrollPane panel) {
+        ModelTabla model = null;
         Object[][] data = null;
         String[] columnas = null;
         boolean[] editables = null;
@@ -342,49 +363,7 @@ public class AccionesTablaAlumnoCursaMateria {
         DatabaseConnection db = new DatabaseConnection();
         try {
             Connection con = db.getConnection();
-            CallableStatement pst = con.prepareCall("{call obtener_top_general()}");
-            pst.executeUpdate();
-            ResultSet rs = pst.getResultSet();
-            List<String> columnNames = new ArrayList<>();
-            editables = new boolean[rs.getMetaData().getColumnCount()];
-            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                columnNames.add(rs.getMetaData().getColumnName(i));
-                editables[i-1] = false;
-            }
-            while (rs.next()) {
-                List<String> lst = new ArrayList<>();
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                    lst.add(rs.getString(i + 1));
-                }
-                contenido.add(lst);
-            }
-            columnas = columnNames.toArray(new String[0]);
-            Object[] row = contenido.toArray();
-            data = new Object[row.length][];
-            for (int k = 0; k < row.length; k++) {
-                data[k] = contenido.get(k).toArray();
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        db.closeConnection();
-        model.setColumnIdentifiers(columnas);
-        model.setEditables(editables);
-        model.createTable();
-        model.llenarDeDatos(data);
-        return model;
-    }
-
-    public static ModelTabla getConsultaPorCarrera(String carrera) {
-        ModelTabla model = new ModelTabla();
-        Object[][] data = null;
-        String[] columnas = null;
-        boolean[] editables = null;
-        List<List<String>> contenido = new ArrayList();
-        DatabaseConnection db = new DatabaseConnection();
-        try {
-            Connection con = db.getConnection();
-            CallableStatement pst = con.prepareCall("{call obtener_top_por_ua(?)}");
+            CallableStatement pst = con.prepareCall("{call obtener_top_por_ua_pa(?)}");
             pst.setString(1, carrera);
             pst.executeUpdate();
             ResultSet rs = pst.getResultSet();
@@ -411,15 +390,14 @@ public class AccionesTablaAlumnoCursaMateria {
             ex.printStackTrace();
         }
         db.closeConnection();
-        model.setColumnIdentifiers(columnas);
-        model.setEditables(editables);
-        model.createTable();
+        model = new ModelTabla(columnas, editables);
+        model.agregarTabla(panel);
         model.llenarDeDatos(data);
-        return model;
+        return data;
     }
 
-    public static ModelTabla getConsultaPorAcademia(String academia) {
-        ModelTabla model = new ModelTabla();
+    public static Object[][] getConsultaPorMateriaDePrograma(String carrera, String materia, JScrollPane panel) {
+        ModelTabla model = null;
         Object[][] data = null;
         String[] columnas = null;
         boolean[] editables = null;
@@ -427,8 +405,9 @@ public class AccionesTablaAlumnoCursaMateria {
         DatabaseConnection db = new DatabaseConnection();
         try {
             Connection con = db.getConnection();
-            CallableStatement pst = con.prepareCall("{call obtener_top_por_ua_a(?)}");
-            pst.setString(1, academia);
+            CallableStatement pst = con.prepareCall("{call obtener_demanda_de_ua_por_pa(?, ?)}");
+            pst.setString(1, materia);
+            pst.setString(2, carrera);
             pst.executeUpdate();
             ResultSet rs = pst.getResultSet();
             List<String> columnNames = new ArrayList<>();
@@ -454,15 +433,14 @@ public class AccionesTablaAlumnoCursaMateria {
             ex.printStackTrace();
         }
         db.closeConnection();
-        model.setColumnIdentifiers(columnas);
-        model.setEditables(editables);
-        model.createTable();
+        model = new ModelTabla(columnas, editables);
+        model.agregarTabla(panel);
         model.llenarDeDatos(data);
-        return model;
+        return data;
     }
 
-    public static ModelTabla getConsultaPorMateria(String materia) {
-        ModelTabla model = new ModelTabla();
+    public static Object[][] getConsultaPorMateria(String materia, JScrollPane panel) {
+        ModelTabla model = null;
         Object[][] data = null;
         String[] columnas = null;
         boolean[] editables = null;
@@ -470,7 +448,7 @@ public class AccionesTablaAlumnoCursaMateria {
         DatabaseConnection db = new DatabaseConnection();
         try {
             Connection con = db.getConnection();
-            CallableStatement pst = con.prepareCall("{call obtener_top_por_ua_pa(?)}");
+            CallableStatement pst = con.prepareCall("{call obtener_demanda_de_ua(?)}");
             pst.setString(1, materia);
             pst.executeUpdate();
             ResultSet rs = pst.getResultSet();
@@ -497,11 +475,10 @@ public class AccionesTablaAlumnoCursaMateria {
             ex.printStackTrace();
         }
         db.closeConnection();
-        model.setColumnIdentifiers(columnas);
-        model.setEditables(editables);
-        model.createTable();
+        model = new ModelTabla(columnas, editables);
+        model.agregarTabla(panel);
         model.llenarDeDatos(data);
-        return model;
+        return data;
     }
 
 //    public static ResultSet getConsultaGeneralRS() {

@@ -6,7 +6,9 @@
 package ahba;
 
 import connection.AccionesTablaAlumnoCursaMateria;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -16,6 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class Alta extends javax.swing.JFrame {
 
+    Object[][] data = null;
     /**
      * Creates new form Alta
      */
@@ -74,11 +77,13 @@ public class Alta extends javax.swing.JFrame {
         labelMatricula = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         labelPorcentaje = new javax.swing.JLabel();
-        botonActualizar = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         labelISISA = new javax.swing.JLabel();
         comboBoxDiscrimina = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
+        comboBoxDiscrimina2 = new javax.swing.JComboBox();
+        jPanel4 = new javax.swing.JPanel();
+        botonActualizar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -268,8 +273,13 @@ public class Alta extends javax.swing.JFrame {
         labelTelematicos.setText("jLabel13");
 
         jButton3.setText("Exportar a Excel");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
-        comboBoxConsulta.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Top UA más demandadas en UPIITA", "Top UA más demandadas por carrera", "Top UA más demandadas por Academia", "Por Unidad de Aprendizaje" }));
+        comboBoxConsulta.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Obtener top materias ordenadas por demanda (Programa Académico)", "Obtener demanda de unidad de aprendizaje", "Obtener demanda de unidades de aprendizaje por programa académico" }));
         comboBoxConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboBoxConsultaActionPerformed(evt);
@@ -291,14 +301,6 @@ public class Alta extends javax.swing.JFrame {
         labelPorcentaje.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         labelPorcentaje.setText("jLabel19");
 
-        botonActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ahba/refresh.png"))); // NOI18N
-        botonActualizar.setText("Actualizar");
-        botonActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botonActualizarMouseClicked(evt);
-            }
-        });
-
         jLabel13.setText("Alumnos de ISISA:");
 
         labelISISA.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
@@ -310,6 +312,48 @@ public class Alta extends javax.swing.JFrame {
             }
         });
 
+        comboBoxDiscrimina2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxDiscrimina2ActionPerformed(evt);
+            }
+        });
+        comboBoxDiscrimina2.setVisible(false);
+
+        jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        botonActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ahba/refresh.png"))); // NOI18N
+        botonActualizar.setText("Actualizar");
+        botonActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                botonActualizarMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                botonActualizarMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonActualizarMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                botonActualizarMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                botonActualizarMouseEntered(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(botonActualizar))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(botonActualizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -320,9 +364,7 @@ public class Alta extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(botonActualizar, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addComponent(jButton3))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
@@ -337,7 +379,7 @@ public class Alta extends javax.swing.JFrame {
                                     .addComponent(labelBionicos, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelMecatronicos, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelTelematicos, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel14)
@@ -351,44 +393,49 @@ public class Alta extends javax.swing.JFrame {
                                         .addComponent(jLabel18)
                                         .addGap(18, 18, 18)
                                         .addComponent(labelPorcentaje)))))
-                        .addGap(177, 177, 177))
+                        .addGap(97, 97, 97)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(comboBoxConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(comboBoxDiscrimina, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(comboBoxDiscrimina, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(comboBoxDiscrimina2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 15, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(botonActualizar)
-                .addGap(9, 9, 9)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(labelBionicos))
-                        .addGap(5, 5, 5)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(labelMecatronicos))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12)
-                            .addComponent(labelTelematicos)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(labelTotal))
-                        .addGap(5, 5, 5)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel16)
-                            .addComponent(labelMatricula))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel18)
-                            .addComponent(labelPorcentaje))))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(labelBionicos))
+                                .addGap(5, 5, 5)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel10)
+                                    .addComponent(labelMecatronicos))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel12)
+                                    .addComponent(labelTelematicos)))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel14)
+                                    .addComponent(labelTotal))
+                                .addGap(5, 5, 5)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel16)
+                                    .addComponent(labelMatricula))
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel18)
+                                    .addComponent(labelPorcentaje)))))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
@@ -396,9 +443,10 @@ public class Alta extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboBoxConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBoxDiscrimina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboBoxDiscrimina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboBoxDiscrimina2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
                 .addGap(13, 13, 13))
@@ -425,6 +473,7 @@ public class Alta extends javax.swing.JFrame {
     private void botonActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonActualizarMouseClicked
         // TODO add your handling code here:
         getStatics();
+        
     }//GEN-LAST:event_botonActualizarMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -485,47 +534,85 @@ public class Alta extends javax.swing.JFrame {
         switch(comboBoxConsulta.getSelectedIndex()){
             case 0:
                 //Consultar en general
-                comboBoxDiscrimina.setModel(new DefaultComboBoxModel(new Object[0]));
-                AccionesTablaAlumnoCursaMateria.getConsultaGeneral().agregarTabla(jScrollPane2);
+                comboBoxDiscrimina2.setVisible(false);
+                comboBoxDiscrimina.setModel(new DefaultComboBoxModel(AccionesTablaAlumnoCursaMateria.getListaCarreras()));
+                comboBoxDiscrimina2.setModel(new DefaultComboBoxModel());
                 break;
                 
             case 1:
-                comboBoxDiscrimina.setModel(new DefaultComboBoxModel(AccionesTablaAlumnoCursaMateria.getListaCarreras()));
-               
+                comboBoxDiscrimina2.setVisible(false);
+                comboBoxDiscrimina.setModel(new DefaultComboBoxModel(AccionesTablaAlumnoCursaMateria.getListaMaterias()));
+                comboBoxDiscrimina2.setModel(new DefaultComboBoxModel());
                 break;
                 
             case 2:
-                comboBoxDiscrimina.setModel(new DefaultComboBoxModel(AccionesTablaAlumnoCursaMateria.getListaAcademias()));
-                
+                comboBoxDiscrimina.setModel(new DefaultComboBoxModel(AccionesTablaAlumnoCursaMateria.getListaCarreras()));
+                comboBoxDiscrimina2.setVisible(true);
+                comboBoxDiscrimina2.setModel(new DefaultComboBoxModel(AccionesTablaAlumnoCursaMateria.getListaMaterias(comboBoxDiscrimina.getSelectedItem().toString())));
                 break;
                 
-            case 3:
-                comboBoxDiscrimina.setModel(new DefaultComboBoxModel(AccionesTablaAlumnoCursaMateria.getListaMaterias()));
-        
-                break;
         }
     }//GEN-LAST:event_comboBoxConsultaActionPerformed
 
     private void comboBoxDiscriminaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxDiscriminaActionPerformed
         String item = comboBoxDiscrimina.getSelectedItem().toString();
+        
         switch(comboBoxConsulta.getSelectedIndex()){
-            case 1:
+            case 0:
                 //carrera
-                AccionesTablaAlumnoCursaMateria.getConsultaPorCarrera(item).agregarTabla(jScrollPane2);
+                data = AccionesTablaAlumnoCursaMateria.getConsultaPorCarrera(item, jScrollPane2);
                 break;
                 
-            case 2:
+            case 1:
                 //academia
-                AccionesTablaAlumnoCursaMateria.getConsultaPorAcademia(item).agregarTabla(jScrollPane2);
+                data = AccionesTablaAlumnoCursaMateria.getConsultaPorMateria(item, jScrollPane2);
                 break;
-            case 3:
+            default:
                 //materia
-                AccionesTablaAlumnoCursaMateria.getConsultaPorMateria(item).agregarTabla(jScrollPane2);
+                comboBoxDiscrimina2.setModel(new DefaultComboBoxModel(AccionesTablaAlumnoCursaMateria.getListaMaterias(comboBoxDiscrimina.getSelectedItem().toString())));
+                
                 break;        
         }
         
         
     }//GEN-LAST:event_comboBoxDiscriminaActionPerformed
+
+    private void comboBoxDiscrimina2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxDiscrimina2ActionPerformed
+        // TODO add your handling code here:
+        String item = comboBoxDiscrimina2.getSelectedItem().toString();
+        ModelTabla model;
+        
+        if(comboBoxConsulta.getSelectedIndex() == 2){
+            data = AccionesTablaAlumnoCursaMateria.getConsultaPorMateriaDePrograma(comboBoxDiscrimina.getSelectedItem().toString(), item, jScrollPane2);
+        }
+    }//GEN-LAST:event_comboBoxDiscrimina2ActionPerformed
+
+    private void botonActualizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonActualizarMouseEntered
+        // TODO add your handling code here:
+        jPanel4.setBackground(new Color(230,230,230));
+    }//GEN-LAST:event_botonActualizarMouseEntered
+
+    private void botonActualizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonActualizarMouseExited
+        // TODO add your handling code here:
+        jPanel4.setBackground(new Color(238, 238, 238));
+    }//GEN-LAST:event_botonActualizarMouseExited
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+
+        CrearExcel ce = new CrearExcel(data);
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void botonActualizarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonActualizarMousePressed
+        // TODO add your handling code here:
+        jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+    }//GEN-LAST:event_botonActualizarMousePressed
+
+    private void botonActualizarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonActualizarMouseReleased
+        // TODO add your handling code here:
+        jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    }//GEN-LAST:event_botonActualizarMouseReleased
 
     /**
      * @param args the command line arguments
@@ -574,6 +661,7 @@ public class Alta extends javax.swing.JFrame {
     private javax.swing.JComboBox comboBoxCarreras2;
     private javax.swing.JComboBox<String> comboBoxConsulta;
     private javax.swing.JComboBox comboBoxDiscrimina;
+    private javax.swing.JComboBox comboBoxDiscrimina2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -595,6 +683,7 @@ public class Alta extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labelBionicos;
@@ -624,7 +713,7 @@ public class Alta extends javax.swing.JFrame {
         labelMatricula.setText(String.valueOf(m));
         if(m == 0)
             m= 1;
-        float p = (100*t)/m;
+        double p = (t * 100.0) / m;
         labelPorcentaje.setText("%" + String.format("%.2f", p));
         
     }
